@@ -13,9 +13,13 @@
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="#">Action</a></li>
-    <li><a href="#">Another action</a></li>
-    <li><a href="#">Something else here</a></li>
+<!--   {% if value %}
+<li><a href="#">Another action</a></li>
+  {% endif %} -->
+  {% for some_number in contentlist %}
+
+    <li><a href="#">{{some_number}}</a></li>
+  {% endfor%}
     <li><a href="#">Separated link</a></li>
   </ul>
 </div>

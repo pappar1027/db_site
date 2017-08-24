@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from profiles.views import SignupView, activate_user_view
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
 	url(r'^datasheet/', include('datasheet.urls')), #include-->sends the remaining string to the included URLconf for further processing
+	url(r'^signup/$', SignupView.as_view(), name='signup'),
+	url(r'^activate/(?P<code>[a-z0-9].*)/$', activate_user_view, name='activate'),
+	url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^admin/', admin.site.urls),
+
 ]
