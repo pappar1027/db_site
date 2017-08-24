@@ -1,29 +1,115 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>mainpage</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Dropdown
+{% extends "base.html" %}
+{% block content %}
+<table>
+  <thead>
+  <tr>
+    <td>
+    <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="table_contract_name" data-toggle="dropdown" aria-expanded="true">
+    Type
     <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-<!--   {% if value %}
-<li><a href="#">Another action</a></li>
-  {% endif %} -->
-  {% for some_number in contentlist %}
-
-    <li><a href="#">{{some_number}}</a></li>
-  {% endfor%}
-    <li><a href="#">Separated link</a></li>
+  <ul class="dropdown-menu" aria-labelledby="table_type">
+    <li><a href="#">Calls</a></li>
+    <li><a href="#">Puts</a></li> 
   </ul>
 </div>
+  </td>
+  <td>
+    <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="table_contract_name" data-toggle="dropdown" aria-expanded="true">
+    Contract Name
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="table_contract_name">
+  {% for option in contentlist %}
+    <li><a href="#">{{option.contract_name}}</a></li>
+  {% endfor%}
+  </ul>
+</div>
+  </td>
+
+    <td>
+  <button class="btn" type="button" id="table_last_trade_date"  aria-expanded="true">
+    Last Trade Date
+  </button>
+  </td>
+
+      <td>
+  <button class="btn btn-secondary" type="button" id="table_strike"  aria-expanded="true">
+    Strike
+  </button>
+  </td>
+        <td>
+  <button class="btn btn-secondary" type="button" id="table_last_price"  aria-expanded="true">
+    Last Price
+  </button>
+  </td>
+      <td>
+  <button class="btn btn-secondary" type="button" id="table_bid"  aria-expanded="true">
+    Bid
+  </button>
+  </td>
+        <td>
+  <button class="btn btn-secondary" type="button" id="table_ask"  aria-expanded="true">
+    Ask
+  </button>
+  </td>
+        <td>
+  <button class="btn btn-secondary" type="button" id="table_change"  aria-expanded="true">
+    Change
+  </button>
+  </td>
+    <td>
+  <button class="btn btn-secondary" type="button" id="table_percentage_change"  aria-expanded="true">
+    % Change
+  </button>
+  </td>
+        <td>
+  <button class="btn btn-secondary" type="button" id="table_volume"  aria-expanded="true">
+    Volume
+  </button>
+  </td>
+        <td>
+  <button class="btn btn-secondary" type="button" id="table_open_interest"  aria-expanded="true">
+    Open Interest
+  </button>
+  </td>
+        <td>
+  <button class="btn btn-secondary" type="button" id="table_implied_volatility"  aria-expanded="true">
+    Implied Volatility
+  </button>
+  </td>
+          <td>
+  <button class="btn btn-secondary" type="button" id="table_last_edit_date"  aria-expanded="true">
+    Last Edit Date
+  </button>
+  </td>   
+</tr>
+  </thead>
+  <tbody>
+  {% for option in contentlist %}
+  <tr>
+    <td>{{ option.calls_or_puts}}</td>
+    <td>{{ option.contract_name}}</td>
+    <td>{{ option.last_trade_date}}</td>
+    <td>{{ option.strike}}</td>
+    <td>{{ option.last_price}}</td>
+    <td>{{ option.bid}}</td>
+    <td>{{ option.ask}}</td>
+    <td>{{ option.change}}</td>
+    <td>{{ option.percentage_change}}</td>
+    <td>{{ option.volume}}</td>
+    <td>{{ option.open_interest}}</td>
+    <td>{{ option.implied_volatility}}</td>
+    <td>{{ option.last_edit}}</td>
+
+  </tr>
+  {% endfor %}
+
+    
+  </tbody>
+</table>
+{% endblock %}
 
 
-</body>
-</html>

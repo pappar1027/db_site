@@ -22,6 +22,7 @@ urlpatterns = [
 	url(r'^datasheet/', include('datasheet.urls')), #include-->sends the remaining string to the included URLconf for further processing
 	url(r'^signup/$', SignupView.as_view(), name='signup'),
 	url(r'^activate/(?P<code>[a-z0-9].*)/$', activate_user_view, name='activate'),
+	# url(r'^accounts/', include('registration.backends.hmac.urls')),
 	url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^admin/', admin.site.urls),
 

@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-
+from .models import Option
+from .utils import get_web_data 
 
 # Create your views here.
 
 
 def index(request):
-	number_list=[20,20.6,7]
-	context={'contentlist':number_list}
+	
+	options=Option.objects.all()
+	context={'contentlist':options}
 	template_name="datasheet/index.html"
 	return render(request,template_name,context)
+
