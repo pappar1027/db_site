@@ -28,7 +28,7 @@ class Profile(models.Model):
             self.save()
             #path_ = reverse()
             path_ = reverse('activate', kwargs={"code": self.activation_key})
-            full_path = "https://datasharing.com" + path_
+            full_path = "https://127.0.0.1:8000/" + path_
             subject = 'Activate Account'
             from_email = settings.DEFAULT_FROM_EMAIL
             message = f'Activate your account here: {full_path}'
@@ -44,3 +44,28 @@ class Profile(models.Model):
                             html_message=html_message)
             sent_mail = False
             return sent_mail
+
+class Datasheet_app(models.Model):
+    datasheet_name=models.CharField(max_length=120)
+    def __str__(self):
+        return self.datasheet_name
+
+class Data_admin(models.Model):
+    admin_email     =models.EmailField()
+    datasheet_name  =models.ForeignKey(Datasheet_app,on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('datasheet_name',)
+    def __str__(self):
+        return "%s (%s)" %(self.datasheet_name,self.admin_email)
+
+class Data_access(models.Model):
+    user_email      =models.EmailField()
+    datasheet_name  =models.ForeignKey(Datasheet_app,on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('datasheet_name',)
+    def __str__(self):
+        return "%s (%s)" %(self.datasheet_name,self.user_email)
+
+

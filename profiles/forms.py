@@ -15,7 +15,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('username','email',)
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -36,7 +36,6 @@ class RegisterForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        print(user.password)
         user.is_active = False
        
 

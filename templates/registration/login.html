@@ -10,9 +10,8 @@
 {% endif %}
 
 {% if next != "/" and next is not None %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    {% if not user.is_active %}
+    <p>Please activate your account before logging in.</p>
     {% else %}
     <p>Please login to see this page.</p>
     {% endif %}

@@ -15,15 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from profiles.views import SignupView, activate_user_view
+from profiles.views import SignupView, activate_user_view, home_view, login_view, pending_activation_view
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
 	url(r'^datasheet/', include('datasheet.urls')), #include-->sends the remaining string to the included URLconf for further processing
 	url(r'^signup/$', SignupView.as_view(), name='signup'),
 	url(r'^activate/(?P<code>[a-z0-9].*)/$', activate_user_view, name='activate'),
-	# url(r'^accounts/', include('registration.backends.hmac.urls')),
+	url(r'^pending_activation/$', pending_activation_view, name='pending_activation'),
 	url(r'^login/$', LoginView.as_view(), name='login'),
+	url(r'^home/$',home_view, name='home'),
     url(r'^admin/', admin.site.urls),
 
 ]

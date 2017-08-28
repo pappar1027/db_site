@@ -131,10 +131,10 @@ STATIC_URL = '/static/'
 # LOGIN_REDIRECT_URL = '/login'
 # SOCIALACCOUNT_QUERY_EMAIL = True
 # ACCOUNT_ACTIVATION_DAYS = 7
-
+#set up account that emails the user during registration
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'internaldatasharing@gmail.com'
-EMAIL_HOST_PASSWORD = 'datasharingpassword'
+EMAIL_HOST_PASSWORD = 'peyplgqcatblmuey'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Data Sharing <internaldatasharing@gmail.com>'
@@ -142,4 +142,7 @@ DEFAULT_FROM_EMAIL = 'Data Sharing <internaldatasharing@gmail.com>'
 ADMINS = (
     ('Data Sharing', EMAIL_HOST_USER),
 )
+
+LOGIN_REDIRECT_URL = 'home'
+
 MANAGERS = ADMINS

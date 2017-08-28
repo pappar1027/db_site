@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Home</h1>
+<h3>Manage Access</h3>
+<table>
+	<thead>
+		<tr>
+			
+			<td>
+				    <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="datasheet_name" data-toggle="dropdown" aria-expanded="true">
+    Datasheet Name
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="table_type">
+    <li><a href="#">BP Options</a></li>
+    <li><a href="#">Ship Tracking</a></li> 
+  </ul>
+</div>
+			</td>
+			<td>User Email    </td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+		
+			<td>BP Options</td>
+			<td>user1@bp.com</td>
+			<td>
+			  <button style="margin:10px;" type="button" data-toggle="dropdown" aria-expanded="true">
+    Delete
+  </button>
+		</td>
+		</tr>
+			<tr>			
+			<td>BP Options</td>
+			<td>user2@bp.com</td>
+			<td>
+			  <button  style="margin:10px;" type="button" data-toggle="dropdown" aria-expanded="true">
+    Delete
+  </button>
+		</td>
+		</tr>
+			<tr>
+			<td>BP Options</td>
+			<td>user3@bp.com</td>
+			<td>
+			  <button  style="margin:10px;" type="button" data-toggle="dropdown" aria-expanded="true">
+    Delete
+  </button>
+		</td>
+		</tr>
+	</tbody>
+</table>
+			  <button class="btn btn-success" type="button" data-toggle="dropdown" aria-expanded="true">
+    Add new user
+  </button>
+
+<h3>Access</h3>
+<ul>
+<li><a href="#">BP Options</a></li>
+<li><a href="#">Ship Tracking</a></li>
+</ul>
+{% endblock %}
