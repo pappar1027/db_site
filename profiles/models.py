@@ -16,8 +16,6 @@ class Profile(models.Model):
     updated           = models.DateTimeField(auto_now=True)
 
 
-
-
     def __str__(self):
         return self.user.email
 
@@ -28,7 +26,7 @@ class Profile(models.Model):
             self.save()
             #path_ = reverse()
             path_ = reverse('activate', kwargs={"code": self.activation_key})
-            full_path = "https://127.0.0.1:8000/" + path_
+            full_path = "http://127.0.0.1:8000/" + path_
             subject = 'Activate Account'
             from_email = settings.DEFAULT_FROM_EMAIL
             message = f'Activate your account here: {full_path}'

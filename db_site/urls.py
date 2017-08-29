@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from profiles.views import SignupView, activate_user_view, home_view, login_view, pending_activation_view
+from profiles.views import SignupView, activate_user_view, home_view, pending_activation_view
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
