@@ -1,39 +1,102 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Home</h1>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#add_new_user").click(function(){
+    	
+        $.ajax({
+        	type:'POST',
+        	data:{
+        		datasheet_name: $('#new_datasheet_name>option:selected').text(),
+        		user_name:$('#new_user_name').val(),
+        		csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        	},
+        	success:function(){
+        	location.reload();
+        	}
+        })
+    }); 
+});
+	
+</script>
+
+<h1>Welcome {{ username }} </h1>
+{% if data_admin_all %}
 <h3>Manage Access</h3>
-<table>
+<table class='table table-bordered'>
 	<thead>
 		<tr>
 			
 			<td>
+
+
+  <form action='/home/' method="post">
+  {% csrf_token %} 
+  <select name="datasheet_admin_name" id="select_datasheet">
+    <option selected="selected" disabled>Datasheet Name:</option>
+{% for d in data_admin_all %}
+    
+    <option value="{{ d.datasheet_name }}"{% ifequal d.datasheet_name data_admin_selected %} selected="selected"{% endifequal %}>{{ d.datasheet_name }}</option>
+    {% endfor %}
+  </select>
+  <input type="submit" value="Select">
+</form>
+<!-- 
 				    <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="datasheet_name" data-toggle="dropdown" aria-expanded="true">
     Datasheet Name
     <span class="caret"></span>
   </button>
+
+
   <ul class="dropdown-menu" aria-labelledby="table_type">
-    <li><a href="#">BP Options</a></li>
-    <li><a href="#">Ship Tracking</a></li> 
+
+  {% for data_admin_info in data_admin_all %}
+    <li><a href="#">{{ data_admin_info.datasheet_name}}</a></li>
+    {% endfor %}
   </ul>
-</div>
+</div> -->
 			</td>
-			<td>User Email    </td>
+			<td>Username    </td>
 			<td></td>
 		</tr>
 	</thead>
 	<tbody>
+	{% for data_access in data_chosen %}
 		<tr>
 		
-			<td>BP Options</td>
-			<td>user1@bp.com</td>
+			<td>{{ data_access.datasheet_name }}</td>
+			<td>{{ data_access.user_name }}</td>
 			<td>
-			  <button style="margin:10px;" type="button" data-toggle="dropdown" aria-expanded="true">
+			  <button style="margin:10px;" type="button" aria-expanded="true">
     Delete
   </button>
 		</td>
 		</tr>
-			<tr>			
+	{% endfor %}
+
+	<tr>
+		
+			<td>
+				  <select name="new_datasheet_admin_name" id="new_datasheet_name">
+    <option selected="selected" disabled>Datasheet Name:</option>
+{% for d in data_admin_all %}
+    
+    <option value="{{ d.datasheet_name }}"{% ifequal d.datasheet_name data_admin_selected %} selected="selected"{% endifequal %}>{{ d.datasheet_name }}</option>
+    {% endfor %}
+  </select>
+			</td>
+
+			<td><input type="text" name="new_user_name" id="new_user_name"></td>
+			<td>
+			  <button class="btn btn-success" style="margin:10px;" type="button" id='add_new_user' aria-expanded="true">
+    Add new user
+  </button>
+		</td>
+		</tr>
+
+<!-- 			<tr>			
 			<td>BP Options</td>
 			<td>user2@bp.com</td>
 			<td>
@@ -50,16 +113,23 @@
     Delete
   </button>
 		</td>
-		</tr>
+		</tr> -->
 	</tbody>
 </table>
-			  <button class="btn btn-success" type="button" data-toggle="dropdown" aria-expanded="true">
-    Add new user
-  </button>
 
+
+ {% endif %}
+
+
+
+
+{% if data_access %}
 <h3>Access</h3>
 <ul>
 <li><a href="#">BP Options</a></li>
 <li><a href="#">Ship Tracking</a></li>
 </ul>
+
+
+{% endif %}
 {% endblock %}

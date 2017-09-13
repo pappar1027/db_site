@@ -26,7 +26,7 @@ class Profile(models.Model):
             self.save()
             #path_ = reverse()
             path_ = reverse('activate', kwargs={"code": self.activation_key})
-            full_path = "http://127.0.0.1:8000/" + path_
+            full_path = "http://127.0.0.1:8000" + path_
             subject = 'Activate Account'
             from_email = settings.DEFAULT_FROM_EMAIL
             message = f'Activate your account here: {full_path}'
@@ -48,22 +48,27 @@ class Datasheet_app(models.Model):
     def __str__(self):
         return self.datasheet_name
 
+    @classmethod
+    def create(cls, datasheet_name):
+        datasheet_app= cls(datasheet_name=datasheet_name)
+        return datasheet_app
+
 class Data_admin(models.Model):
-    admin_email     =models.EmailField()
+    admin_name      =models.CharField(max_length=120, default='')
     datasheet_name  =models.ForeignKey(Datasheet_app,on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('datasheet_name',)
     def __str__(self):
-        return "%s (%s)" %(self.datasheet_name,self.admin_email)
+        return "%s (%s)" %(self.datasheet_name,self.admin_name)
 
 class Data_access(models.Model):
-    user_email      =models.EmailField()
+    user_name      =models.CharField(max_length=120, default='')
     datasheet_name  =models.ForeignKey(Datasheet_app,on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('datasheet_name',)
     def __str__(self):
-        return "%s (%s)" %(self.datasheet_name,self.user_email)
+        return "%s (%s)" %(self.datasheet_name,self.user_name)
 
 

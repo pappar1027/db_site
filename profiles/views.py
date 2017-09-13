@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import CreateView, DetailView, View
 from .forms import RegisterForm
-from .models import Profile
+from .models import Profile, Data_admin, Data_access, Datasheet_app
 # get default authenticate backend
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -73,7 +73,7 @@ from django.contrib.auth.decorators import login_required
 class SignupView(SuccessMessageMixin, CreateView):
     form_class = RegisterForm
     template_name = 'registration/signuppage.html'
-    success_url = '/login'
+    success_url = '/pending_activation'
     success_message = "Your account was created successfully. Please check your email."
 
     def dispatch(self, *args, **kwargs):
@@ -96,9 +96,42 @@ def activate_user_view(request, code=None, *args, **kwargs):
                 return redirect("/login")
     return redirect("/login")
 
-def home_view(request):
+def home_view(request,*args, **kwargs):
+    if request.user.is_active:
+        if request.method=='POST' and 'datasheet_admin_name' not in request.POST:
+            new_datasheet_name=request.POST['datasheet_name']
+            new_datasheet_app=Datasheet_app.objects.get(datasheet_name=new_datasheet_name)
+            new_user_name=request.POST['user_name']
+            print(new_datasheet_app)
+            print(new_user_name)
+            new_entry=Data_access.objects.create(
+            datasheet_name=new_datasheet_app,
+            user_name=new_user_name
+            )
+            new_entry.save()
+
+
+        username=request.user.get_username()
+        data_access=Data_access.objects.filter(user_name=username)
+        data_admin=Data_admin.objects.filter(admin_name=username)
+        data_access_qs_total=Data_access.objects.none()
+        for data_admin_entry in data_admin:
+            datasheet_app=data_admin_entry.datasheet_name
+            data_access_qs=Data_access.objects.filter(datasheet_name=datasheet_app)
+            data_access_qs_total=data_access_qs_total | data_access_qs
+        print(data_access_qs_total)
+
+        context=dict(username=username,data_access=data_access,data_admin_all=data_admin, data_chosen=data_access_qs_total)
+        if 'datasheet_admin_name' in request.POST:
+            context['data_admin_selected'] = request.POST['datasheet_admin_name']
+            datasheet_name=Datasheet_app.objects.filter(datasheet_name=context['data_admin_selected'])
+            context['data_chosen'] = Data_access.objects.filter(datasheet_name=datasheet_name)
+
+
+
+
     template_name="home.html"
-    return render(request,template_name)
+    return render(request,template_name,context)
 
 def pending_activation_view(request):
     template_name='pendingactivation.html'

@@ -9,13 +9,6 @@
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
-{% if next != "/" and next is not None %}
-    {% if not user.is_active %}
-    <p>Please activate your account before logging in.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
