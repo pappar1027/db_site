@@ -17,6 +17,16 @@ $(document).ready(function() {
         	}
         })
     }); 
+    // Find and remove selected table rows
+        $(".delete-row").click(function(){
+        	$(this).parents("tr").remove();
+        	$.ajax({
+        		type:'DELETE',
+
+        	})
+
+        });
+
 });
 	
 </script>
@@ -66,10 +76,10 @@ $(document).ready(function() {
 	{% for data_access in data_chosen %}
 		<tr>
 		
-			<td>{{ data_access.datasheet_name }}</td>
+			<td name='record'>{{ data_access.datasheet_name }}</td>
 			<td>{{ data_access.user_name }}</td>
 			<td>
-			  <button style="margin:10px;" type="button" aria-expanded="true">
+			  <button class='delete_row' style="margin:10px;" type="button" aria-expanded="true">
     Delete
   </button>
 		</td>
@@ -126,8 +136,9 @@ $(document).ready(function() {
 {% if data_access %}
 <h3>Access</h3>
 <ul>
-<li><a href="#">BP Options</a></li>
-<li><a href="#">Ship Tracking</a></li>
+{% for data_access_info in data_access %}
+<li><a href="/datasheet/{{data_access_info.datasheet_name}}">{{ data_access_info.datasheet_name }}</a></li>
+{% endfor %}
 </ul>
 
 

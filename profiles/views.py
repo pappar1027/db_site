@@ -102,8 +102,6 @@ def home_view(request,*args, **kwargs):
             new_datasheet_name=request.POST['datasheet_name']
             new_datasheet_app=Datasheet_app.objects.get(datasheet_name=new_datasheet_name)
             new_user_name=request.POST['user_name']
-            print(new_datasheet_app)
-            print(new_user_name)
             new_entry=Data_access.objects.create(
             datasheet_name=new_datasheet_app,
             user_name=new_user_name
