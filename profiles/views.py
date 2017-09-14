@@ -10,6 +10,7 @@ from .models import Profile, Data_admin, Data_access, Datasheet_app
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import QueryDict
 # Create your views here.
 
 
@@ -98,15 +99,28 @@ def activate_user_view(request, code=None, *args, **kwargs):
 
 def home_view(request,*args, **kwargs):
     if request.user.is_active:
-        if request.method=='POST' and 'datasheet_admin_name' not in request.POST:
+        
+        if 'HTTP_X_METHODOVERRIDE' in request.META:
+            http_method=request.META['HTTP_X_METHODOVERRIDE']
+            if http_method.lower() == 'delete':
+                request.method = 'DELETE'
+                request.META['REQUEST_METHOD'] = 'DELETE'
+                request.DELETE = QueryDict(request.body)
+        if request.method=='DELETE':
+            datasheet_name_to_remove=request.DELETE['datasheet_name']
+            user_name_to_remove=request.DELETE['user_name']
+            datasheet_app_chosen=Datasheet_app.objects.get(datasheet_name=datasheet_name_to_remove)
+            data_access_to_remove=Data_access.objects.get(datasheet_name=datasheet_app_chosen,user_name=user_name_to_remove)
+            data_access_to_remove.delete()
+
+        elif request.method=='POST' and 'datasheet_admin_name' not in request.POST:
             new_datasheet_name=request.POST['datasheet_name']
             new_datasheet_app=Datasheet_app.objects.get(datasheet_name=new_datasheet_name)
             new_user_name=request.POST['user_name']
-            new_entry=Data_access.objects.create(
+            new_entry=Data_access.objects.get_or_create(
             datasheet_name=new_datasheet_app,
             user_name=new_user_name
             )
-            new_entry.save()
 
 
         username=request.user.get_username()
@@ -117,7 +131,6 @@ def home_view(request,*args, **kwargs):
             datasheet_app=data_admin_entry.datasheet_name
             data_access_qs=Data_access.objects.filter(datasheet_name=datasheet_app)
             data_access_qs_total=data_access_qs_total | data_access_qs
-        print(data_access_qs_total)
 
         context=dict(username=username,data_access=data_access,data_admin_all=data_admin, data_chosen=data_access_qs_total)
         if 'datasheet_admin_name' in request.POST:

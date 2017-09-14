@@ -48,10 +48,6 @@ class Datasheet_app(models.Model):
     def __str__(self):
         return self.datasheet_name
 
-    @classmethod
-    def create(cls, datasheet_name):
-        datasheet_app= cls(datasheet_name=datasheet_name)
-        return datasheet_app
 
 class Data_admin(models.Model):
     admin_name      =models.CharField(max_length=120, default='')

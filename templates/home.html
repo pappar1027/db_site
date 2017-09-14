@@ -17,17 +17,43 @@ $(document).ready(function() {
         	}
         })
     }); 
-    // Find and remove selected table rows
-        $(".delete-row").click(function(){
-        	$(this).parents("tr").remove();
+    //Find and remove selected table rows
+
+
+        $(".delete_row").click(function(){
+        	
+        	var datasheet=$(this).parents("tr").children(".datasheet_name").text();
+  			var username=$(this).parents("tr").children(".user_name").text();      	
+        	
         	$.ajax({
-        		type:'DELETE',
+        		type:'POST',
+        		beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+    },
+        		data:{
+        			datasheet_name: datasheet,
+        			user_name:username,
+
+        		},
+
+        	headers: { 'X-METHODOVERRIDE': 'DELETE' },
+        	        		success:function(){
+        			alert('good');
+        	location.reload();
+        	},
+        	
 
         	})
+        	// $(this).parents("tr").remove();
+        });
+
+
+
+        	
 
         });
 
-});
+
 	
 </script>
 
@@ -76,8 +102,8 @@ $(document).ready(function() {
 	{% for data_access in data_chosen %}
 		<tr>
 		
-			<td name='record'>{{ data_access.datasheet_name }}</td>
-			<td>{{ data_access.user_name }}</td>
+			<td class='datasheet_name' id='{{data_access.datasheet_name}}-{{ data_access.user_name }}'>{{ data_access.datasheet_name }}</td>
+			<td class='user_name'>{{ data_access.user_name }}</td>
 			<td>
 			  <button class='delete_row' style="margin:10px;" type="button" aria-expanded="true">
     Delete
