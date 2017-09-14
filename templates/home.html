@@ -125,6 +125,9 @@ select#soflow-color {
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
+
+
+
     $("#add_new_user").click(function(){
     	
         $.ajax({
@@ -160,7 +163,7 @@ $(document).ready(function() {
 
         	headers: { 'X-METHODOVERRIDE': 'DELETE' },
         	        		success:function(){
-        			alert('good');
+        			
         	location.reload();
         	},
         	
@@ -186,12 +189,12 @@ $(document).ready(function() {
 	<thead>
 		<tr>
 			
-			<td>
+			<td style="width:1000px;">
 
 
-  <form action='/home/' method="post">
+<form action='/home/' method="post">
   {% csrf_token %} 
-  <div class="styled-select blue semi-square">
+  
   <select name="datasheet_admin_name" id="select_datasheet">
     <option selected="selected" disabled>Datasheet Name:</option>
 {% for d in data_admin_all %}
@@ -199,24 +202,11 @@ $(document).ready(function() {
     <option value="{{ d.datasheet_name }}"{% ifequal d.datasheet_name data_admin_selected %} selected="selected"{% endifequal %}>{{ d.datasheet_name }}</option>
     {% endfor %}
   </select>
-  </div>
+ 
   <input type="submit" value="Select">
 </form>
-<!-- 
-				    <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="datasheet_name" data-toggle="dropdown" aria-expanded="true">
-    Datasheet Name
-    <span class="caret"></span>
-  </button>
 
 
-  <ul class="dropdown-menu" aria-labelledby="table_type">
-
-  {% for data_admin_info in data_admin_all %}
-    <li><a href="#">{{ data_admin_info.datasheet_name}}</a></li>
-    {% endfor %}
-  </ul>
-</div> -->
 			</td>
 			<td>Username    </td>
 			<td></td>
@@ -259,24 +249,7 @@ $(document).ready(function() {
 		</td>
 		</tr>
 
-<!-- 			<tr>			
-			<td>BP Options</td>
-			<td>user2@bp.com</td>
-			<td>
-			  <button  style="margin:10px;" type="button" data-toggle="dropdown" aria-expanded="true">
-    Delete
-  </button>
-		</td>
-		</tr>
-			<tr>
-			<td>BP Options</td>
-			<td>user3@bp.com</td>
-			<td>
-			  <button  style="margin:10px;" type="button" data-toggle="dropdown" aria-expanded="true">
-    Delete
-  </button>
-		</td>
-		</tr> -->
+
 	</tbody>
 </table>
 

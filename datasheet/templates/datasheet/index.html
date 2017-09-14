@@ -14,35 +14,7 @@
           }
         })
     });
-    //         $(".update_entry").click(function(){
-          
-    //       var calls_or_puts=$(this).parents("tr").children(".calls_or_puts").text();
-    //     var contract_name=$(this).parents("tr").children(".contract_name").text(); 
-    //     var last_trade_date= $(this).parents("tr").children(".last_trade_date").text();
-    //     alert(contract_name);
-           
-          
-    // //       $.ajax({
-    // //         type:'POST',
-    // //         beforeSend: function(xhr) {
-    // //     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-    // // },
-    // //         data:{
-    // //           datasheet_name: datasheet,
-    // //           user_name:username,
 
-    // //         },
-
-    // //       headers: { 'X-METHODOVERRIDE': 'DELETE' },
-    // //                   success:function(){
-    // //           alert('good');
-    // //       location.reload();
-    // //       },
-          
-
-    // //       })
-    //       // $(this).parents("tr").remove();
-    //     });
             $("input").on("change paste keyup", function() {
               $(this).parents('tr').children('td').children('.value_changed').prop('checked',true); 
 

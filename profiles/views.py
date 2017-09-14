@@ -14,60 +14,7 @@ from django.http import QueryDict
 # Create your views here.
 
 
-# create a function to resolve email to username
 
-# def get_user(email):
-#     try:
-#         return User.objects.get(email=email.lower())
-#     except User.DoesNotExist:
-#         return None
-
-# # create a view that authenticate user with email
-# def email_login_view(request):
-#     email = request.POST.get('email','')
-#     password = request.POST.get('password','')
-#     username = get_user(email)
-#     user = authenticate(username=username, password=password)
-#     if user is not None:
-#         if user.is_active:
-#             login(request, user)
-#             print('Redirecting to home')
-#             return redirect("/home")
-#         else:
-#             print('Disabled account.')
-#             messages.error(request, 'Disabled account.')
-
-#             # Return a 'disabled account' error message
-#     else:
-#         print('Invalid login')
-#         messages.error(request, 'Invalid login')
-#         # Return an 'invalid login' error message.
-#     return render(request,'datasheet/index.html')
-
-# class Login_View(LoginRequiredMixin, View):
-#     login_url = '/login/'
-#     redirect_field_name = 'home'
-
-# def login_view(request):
-#     print(request)
-#     template_name='registration/login.html'
-#     username = request.POST.get('username','')
-#     password = request.POST.get('password','')
-#     user = authenticate(request, username=username, password=password)
-#     if user is not None:
-#         if user.is_active:
-#             login(request, user)
-#             print('Redirecting to home')
-#             return redirect("/home")
-#         else:
-#             print('Disabled account.')
-#             messages.error(request, 'Disabled account.')
-#             return redirect(reverse('login'))
-#     else:
-#         print('Invalid login')
-#         print('username:'+username+',password'+password)
-#         messages.error(request, 'Invalid login') #appear in admin page
-#         return redirect(reverse('home'))
         
 
 
@@ -97,8 +44,9 @@ def activate_user_view(request, code=None, *args, **kwargs):
                 return redirect("/login")
     return redirect("/login")
 
-def home_view(request,*args, **kwargs):
+def home_view(request):
     if request.user.is_active:
+        print(request.META)
         
         if 'HTTP_X_METHODOVERRIDE' in request.META:
             http_method=request.META['HTTP_X_METHODOVERRIDE']
@@ -113,6 +61,12 @@ def home_view(request,*args, **kwargs):
             data_access_to_remove=Data_access.objects.get(datasheet_name=datasheet_app_chosen,user_name=user_name_to_remove)
             data_access_to_remove.delete()
 
+        # elif 'HTTP_X_CHOOSE' in request.META:
+
+        #     datasheet_chosen = request.POST['datasheet_name']
+        #     datasheet_name=Datasheet_app.objects.filter(datasheet_name=datasheet_chosen)
+        #     context['data_chosen'] = Data_access.objects.filter(datasheet_name=datasheet_name)
+
         elif request.method=='POST' and 'datasheet_admin_name' not in request.POST:
             new_datasheet_name=request.POST['datasheet_name']
             new_datasheet_app=Datasheet_app.objects.get(datasheet_name=new_datasheet_name)
@@ -121,7 +75,6 @@ def home_view(request,*args, **kwargs):
             datasheet_name=new_datasheet_app,
             user_name=new_user_name
             )
-
 
         username=request.user.get_username()
         data_access=Data_access.objects.filter(user_name=username)
@@ -132,16 +85,21 @@ def home_view(request,*args, **kwargs):
             data_access_qs=Data_access.objects.filter(datasheet_name=datasheet_app)
             data_access_qs_total=data_access_qs_total | data_access_qs
 
-        context=dict(username=username,data_access=data_access,data_admin_all=data_admin, data_chosen=data_access_qs_total)
+        
         if 'datasheet_admin_name' in request.POST:
-            context['data_admin_selected'] = request.POST['datasheet_admin_name']
-            datasheet_name=Datasheet_app.objects.filter(datasheet_name=context['data_admin_selected'])
-            context['data_chosen'] = Data_access.objects.filter(datasheet_name=datasheet_name)
+            datasheet_chosen = request.POST['datasheet_admin_name']
+            datasheet_name=Datasheet_app.objects.filter(datasheet_name=datasheet_chosen)
+            data_access_qs_total = Data_access.objects.filter(datasheet_name=datasheet_name)
+            
 
+        context=dict(username=username,data_access=data_access,data_admin_all=data_admin, data_chosen=data_access_qs_total)
+
+            
 
 
 
     template_name="home.html"
+
     return render(request,template_name,context)
 
 def pending_activation_view(request):

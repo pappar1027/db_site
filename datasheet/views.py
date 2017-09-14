@@ -11,7 +11,6 @@ import json
 def index(request,data_type=None):
 	if request.user.is_active:
 		if 'HTTP_X_UPDATE' in request.META:
-			print('good good')
 			get_web_data()
 		elif request.method=='POST':
 			result = json.loads(request.POST['data_changed'])
@@ -31,13 +30,4 @@ def index(request,data_type=None):
 
 
 
-# def index_search(request):
-# 	# get_web_data()
-# 	if data_type is None:
-# 		options=Option.objects.all()
-# 	else:
-# 		options=Option.objects.filter(calls_or_puts=data_type)
-# 	context={'contentlist':options}
-# 	template_name="datasheet/index.html"
-# 	return render(request,template_name,context)
 
