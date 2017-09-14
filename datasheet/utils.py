@@ -42,6 +42,24 @@ def process_table(table_data,data_type,last_edit):
 			row = cursor.fetchone()
 
 
+
+def process_data_change(data_dict):
+	contract_name=data_dict['contract_name']
+	calls_or_puts=data_dict['calls_or_puts']
+	strike=float(data_dict['strike'])
+	last_price=float(data_dict['last_price'])
+	bid=float(data_dict['bid'])
+	ask=float(data_dict['ask'])
+	change=float(data_dict['change'])
+	percentage_change=data_dict['percentage_change']
+	volume=int(data_dict['volume'])
+	open_interest=int(data_dict['open_interest'])
+	implied_volatility=data_dict['implied_volatility']
+	last_edit=str(datetime.datetime.now())
+	with connection.cursor() as cursor:
+		cursor.execute("UPDATE datasheet_option SET strike=%s, last_price=%s, bid=%s, ask=%s, change=%s, percentage_change=%s, volume=%s, open_interest=%s, implied_volatility=%s, last_edit=%s WHERE contract_name=%s",[strike,last_price,bid,ask,change,percentage_change,volume,open_interest,implied_volatility,last_edit,contract_name])
+		row = cursor.fetchone()
+
 def get_web_data(url='https://finance.yahoo.com/quote/bp/options?p=bp'):
 	r=requests.get(url)
 	soup=BeautifulSoup(r.content,"lxml")

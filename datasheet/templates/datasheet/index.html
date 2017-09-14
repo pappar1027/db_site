@@ -1,11 +1,132 @@
 {% extends "base.html" %}
 {% block content %}
-<table class='table table-bordered'>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#update_from_source").click(function(){
+      
+        $.ajax({
+          type:'GET',
+          headers: { 'X-UPDATE': 'UPDATE_DATA' },
+          beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');},
+          success:function(){
+          location.reload();
+          }
+        })
+    });
+    //         $(".update_entry").click(function(){
+          
+    //       var calls_or_puts=$(this).parents("tr").children(".calls_or_puts").text();
+    //     var contract_name=$(this).parents("tr").children(".contract_name").text(); 
+    //     var last_trade_date= $(this).parents("tr").children(".last_trade_date").text();
+    //     alert(contract_name);
+           
+          
+    // //       $.ajax({
+    // //         type:'POST',
+    // //         beforeSend: function(xhr) {
+    // //     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+    // // },
+    // //         data:{
+    // //           datasheet_name: datasheet,
+    // //           user_name:username,
+
+    // //         },
+
+    // //       headers: { 'X-METHODOVERRIDE': 'DELETE' },
+    // //                   success:function(){
+    // //           alert('good');
+    // //       location.reload();
+    // //       },
+          
+
+    // //       })
+    //       // $(this).parents("tr").remove();
+    //     });
+            $("input").on("change paste keyup", function() {
+              $(this).parents('tr').children('td').children('.value_changed').prop('checked',true); 
+
+});
+            $("#save_changes").click(function(){
+              var result_arr=[];
+              $('#data_table> tbody  > tr').each(function(){
+                if ($(this).children('td').children('.value_changed').prop('checked')==true){
+                  var calls_or_puts=$(this).children(".calls_or_puts").text();
+                  var contract_name=$(this).children(".contract_name").text(); 
+                  var last_trade_date= $(this).children(".last_trade_date").text();
+                  var strike=$(this).children('td').children('.strike').val();
+                  var last_price=$(this).children('td').children('.last_price').val();
+                  var bid=$(this).children('td').children('.bid').val();
+                  var ask=$(this).children('td').children('.ask').val();
+                  var change=$(this).children('td').children('.change').val();
+                  var percentage_change=$(this).children('td').children('.percentage_change').val();
+                  var volume=$(this).children('td').children('.volume').val();
+                  var open_interest=$(this).children('td').children('.open_interest').val();
+                  var implied_volatility=$(this).children('td').children('.implied_volatility').val();
+                  var data_dict={
+                    'calls_or_puts':calls_or_puts,
+                    'contract_name':contract_name,
+                    'last_trade_date':last_trade_date,
+                    'strike':strike,
+                    'last_price':last_price,
+                    'bid':bid,
+                    'ask':ask,
+                    'change':change,
+                    'percentage_change':percentage_change,
+                    'volume':volume,
+                    'open_interest':open_interest,
+                    'implied_volatility':implied_volatility,
+                  
+
+                  };
+                  result_arr.push(data_dict);
+
+                }
+                
+
+              });
+              var json_string = JSON.stringify(result_arr);
+              alert(json_string);
+
+
+            $.ajax({
+            type:'POST',
+            beforeSend: function(xhr) {
+        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+    },
+            data:{
+              data_changed: json_string,
+            },
+
+          
+                      success:function(){
+          location.reload();
+          },
+    })
+
+
+          
+            });
+
+                
+
+
+
+
+
+          
+
+        });
+</script>
+<h1>BP options</h1>
+<button style="margin:10px;" id="update_from_source" class="btn btn-danger">Update from source</button>
+<button style="margin:10px;" id="save_changes" class="btn btn-danger">Save changes</button>
+<table id='data_table' class='table table-bordered'>
   <thead>
   <tr>
     <td>
     <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" id="table_contract_name" data-toggle="dropdown" aria-expanded="true">
+  <button class="btn btn-info dropdown-toggle" type="button" id="table_contract_name" data-toggle="dropdown" aria-expanded="true">
     Type
     <span class="caret"></span>
   </button>
@@ -16,93 +137,86 @@
 </div>
   </td>
   <td>
-    <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" id="table_contract_name" data-toggle="dropdown" aria-expanded="true">
     Contract Name
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="table_contract_name">
-  {% for option in contentlist %}
-    <li><a href="#">{{option.contract_name}}</a></li>
-  {% endfor%}
-  </ul>
-</div>
+  
+
   </td>
 
     <td>
-  <button class="btn" type="button" id="table_last_trade_date"  aria-expanded="true">
+ 
     Last Trade Date
-  </button>
+
   </td>
 
       <td>
-  <button class="btn btn-secondary" type="button" id="table_strike"  aria-expanded="true">
+ 
     Strike
-  </button>
+
   </td>
         <td>
-  <button class="btn btn-secondary" type="button" id="table_last_price"  aria-expanded="true">
+  
     Last Price
-  </button>
+
   </td>
       <td>
-  <button class="btn btn-secondary" type="button" id="table_bid"  aria-expanded="true">
+
     Bid
-  </button>
+
   </td>
         <td>
-  <button class="btn btn-secondary" type="button" id="table_ask"  aria-expanded="true">
+
     Ask
-  </button>
+
   </td>
         <td>
-  <button class="btn btn-secondary" type="button" id="table_change"  aria-expanded="true">
+
     Change
-  </button>
+
   </td>
     <td>
-  <button class="btn btn-secondary" type="button" id="table_percentage_change"  aria-expanded="true">
+
     % Change
-  </button>
+
   </td>
         <td>
-  <button class="btn btn-secondary" type="button" id="table_volume"  aria-expanded="true">
+
     Volume
-  </button>
+ 
   </td>
         <td>
-  <button class="btn btn-secondary" type="button" id="table_open_interest"  aria-expanded="true">
+
     Open Interest
-  </button>
+
   </td>
         <td>
-  <button class="btn btn-secondary" type="button" id="table_implied_volatility"  aria-expanded="true">
+ 
     Implied Volatility
-  </button>
+ 
   </td>
           <td>
-  <button class="btn btn-secondary" type="button" id="table_last_edit_date"  aria-expanded="true">
     Last Edit Date
-  </button>
-  </td>   
+  
+  </td> 
+  <td></td>  
 </tr>
   </thead>
   <tbody>
   {% for option in contentlist %}
   <tr>
-    <td>{{ option.calls_or_puts}}</td>
-    <td>{{ option.contract_name}}</td>
-    <td>{{ option.last_trade_date}}</td>
-    <td>{{ option.strike}}</td>
-    <td>{{ option.last_price}}</td>
-    <td>{{ option.bid}}</td>
-    <td>{{ option.ask}}</td>
-    <td>{{ option.change}}</td>
-    <td>{{ option.percentage_change}}</td>
-    <td>{{ option.volume}}</td>
-    <td>{{ option.open_interest}}</td>
-    <td>{{ option.implied_volatility}}</td>
-    <td>{{ option.last_edit}}</td>
+    <td class='calls_or_puts'>{{ option.calls_or_puts}}</td>
+    <td class='contract_name'>{{ option.contract_name}}</td>
+    <td class='last_trade_date'>{{ option.last_trade_date}}</td>
+    <td><input class='strike' value={{option.strike}} style="width:70px;"></td>
+    <td><input type="text" class='last_price' value={{option.last_price}} style="width:70px;"></td>
+    <td><input type="text" class="bid" value={{option.bid}} style="width:70px;"></td>
+    <td><input type="text" class="ask" value={{option.ask}} style="width:70px;"></td>
+    <td><input type="text" class="change" value={{ option.change}} style="width:70px;"></td>
+    <td><input type="text" class="percentage_change" value={{option.percentage_change}} style="width:70px;"></td>
+    <td><input type="text" class="volume" value={{ option.volume}} style="width:70px;"></td>
+    <td><input type="text" class="open_interest" value={{ option.open_interest}} style="width:70px;"></td>
+    <td><input type="text" class="implied_volatility" value={{ option.implied_volatility}} style="width:70px;"></td>
+    <td class='last_edit' style="width:300px;">{{ option.last_edit}}</td>
+    <td><input type="checkbox" class="value_changed">Change detected</td>  
 
   </tr>
   {% endfor %}
