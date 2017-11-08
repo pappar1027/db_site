@@ -49,6 +49,7 @@ def home_view(request):
         print(request.META)
         
         if 'HTTP_X_METHODOVERRIDE' in request.META:
+            print('yay')
             http_method=request.META['HTTP_X_METHODOVERRIDE']
             if http_method.lower() == 'delete':
                 request.method = 'DELETE'

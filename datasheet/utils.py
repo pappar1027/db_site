@@ -63,8 +63,8 @@ def process_data_change(data_dict):
 def get_web_data(url='https://finance.yahoo.com/quote/bp/options?p=bp'):
 	r=requests.get(url)
 	soup=BeautifulSoup(r.content,"lxml")
-	calls_data=soup.body.find_all('table')[1]
-	puts_data=soup.body.find_all('table')[2]
+	calls_data=soup.body.find_all('table')[0]
+	puts_data=soup.body.find_all('table')[1]
 	last_edit=str(datetime.datetime.now())
 	process_table(calls_data,'calls',last_edit)
 	process_table(puts_data,'puts',last_edit)

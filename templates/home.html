@@ -152,6 +152,7 @@ $(document).ready(function() {
         	
         	$.ajax({
         		type:'POST',
+        		headers: { 'X-METHODOVERRIDE': 'DELETE' },
         		beforeSend: function(xhr) {
         xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
     },
@@ -161,7 +162,7 @@ $(document).ready(function() {
 
         		},
 
-        	headers: { 'X-METHODOVERRIDE': 'DELETE' },
+        	
         	        		success:function(){
         			
         	location.reload();
@@ -219,7 +220,7 @@ $(document).ready(function() {
 			<td class='datasheet_name' id='{{data_access.datasheet_name}}-{{ data_access.user_name }}'>{{ data_access.datasheet_name }}</td>
 			<td class='user_name'>{{ data_access.user_name }}</td>
 			<td>
-			  <button class="btn btn-danger" class='delete_row' style="margin:5px;" type="button" aria-expanded="true">
+			  <button class="btn btn-danger delete_row" style="margin:5px;" type="button" aria-expanded="true">
     Delete
   </button>
 		</td>
